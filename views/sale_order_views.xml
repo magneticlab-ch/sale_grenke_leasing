@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extension de la vue formulaire sale.order - Odoo 19 -->
+    <record id="view_sale_order_form_leasing" model="ir.ui.view">
+        <field name="name">sale.order.form.leasing</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+
+            <!-- Indicateur visuel dans la smart button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <div class="oe_stat_button o_not_clickable"
+                     invisible="not leasing_enabled"
+                     style="cursor: default;">
+                    <i class="fa fa-percent o_button_icon" style="color: #005B9A;"/>
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text" style="color: #005B9A; font-weight: bold;">Leasing</span>
+                        <span class="o_stat_text" style="color: #005B9A;">Actif</span>
+                    </div>
+                </div>
+            </xpath>
+
+            <!-- Onglet Leasing Grenke -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Leasing Grenke" name="grenke_leasing">
+
+                    <!-- ACTIVATION -->
+                    <group>
+                        <group string="Activation du financement Grenke">
+                            <field name="leasing_enabled"
+                                   widget="boolean_toggle"
+                                   string="Proposer le financement Grenke Leasing"/>
+                        </group>
+                    </group>
+
+                    <!-- Message si desactive -->
+                    <div invisible="leasing_enabled"
+                         style="text-align:center; padding: 24px; color: #888; font-size: 11pt;">
+                        <i class="fa fa-info-circle fa-2x" style="color: #005B9A;"/>
+                        <p style="margin-top: 10px;">
+                            Activez l'option ci-dessus pour calculer automatiquement
+                            les mensualites Grenke Leasing.<br/>
+                            <small>Base sur le bareme officiel Grenke Suisse - Octobre 2024</small>
+                        </p>
+                    </div>
+
+                    <!-- SECTION PRINCIPALE (leasing active) -->
+                    <div invisible="not leasing_enabled">
+
+                        <!-- PARAMETRES DU CONTRAT -->
+                        <group string="Parametres du contrat">
+                            <group>
+                                <field name="leasing_amount"
+                                       string="Montant a financer HT (CHF)"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_duration"
+                                       string="Duree du contrat"
+                                       widget="radio"
+                                       options="{'horizontal': true}"/>
+                                <field name="leasing_residual_value_enabled"
+                                       string="Valeur residuelle de rachat (3% optionnel)"/>
+                            </group>
+                            <group string="Frais de dossier">
+                                <field name="leasing_dossier_fee_override"
+                                       string="Saisir manuellement les frais de dossier"/>
+                                <field name="leasing_dossier_fee_manual"
+                                       string="Frais de dossier manuels (CHF)"
+                                       invisible="not leasing_dossier_fee_override"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_tranche_label"
+                                       string="Tranche Grenke appliquee"
+                                       readonly="1"/>
+                                <field name="leasing_rate"
+                                       string="Coefficient Grenke (%)"
+                                       readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- RESULTATS CALCULES -->
+                        <group string="Recapitulatif du financement" col="2">
+                            <group string="Mensualites et loyers">
+                                <field name="leasing_monthly"
+                                       string="Mensualite HT (CHF/mois)"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_duration_int"
+                                       string="Nombre de mensualites"
+                                       readonly="1"/>
+                                <field name="leasing_total_rent"
+                                       string="Total loyers HT"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <group string="Couts additionnels">
+                                <field name="leasing_residual_amount"
+                                       string="Valeur residuelle (CHF)"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_dossier_fee"
+                                       string="Frais de dossier HT"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_dossier_fee_rate_display"
+                                       string="Taux frais de dossier (%)"
+                                       readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- TOTAUX -->
+                        <group col="2">
+                            <group string="Totaux">
+                                <field name="leasing_grand_total"
+                                       string="Cout total financement HT"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_overcost"
+                                       string="Surcout vs achat comptant (CHF)"
+                                       readonly="1"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="leasing_overcost_pct"
+                                       string="Surcout (%)"
+                                       readonly="1"/>
+                            </group>
+                            <group string="Conditions Grenke">
+                                <div class="alert alert-info" role="alert"
+                                     style="font-size: 11px; margin: 8px 0;">
+                                    <strong>Garantie 48h :</strong>
+                                    Facture reglee dans les 48h des documents complets.<br/>
+                                    <strong>Paiement :</strong>
+                                    LSV mensuel ou trimestriel, le 1er du mois.<br/>
+                                    <strong>Assurance :</strong>
+                                    Non incluse, a definir separement.<br/>
+                                    <strong>Licences :</strong>
+                                    Uniquement perpetuelles ou transferables.
+                                </div>
+                            </group>
+                        </group>
+
+                    </div>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

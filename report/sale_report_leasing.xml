@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_saleorder_document_leasing"
+              inherit_id="sale.report_saleorder_document">
+
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="doc.leasing_enabled and doc.leasing_amount">
+
+                <!-- BLOC 1 : Resume leasing dans le devis -->
+                <div style="margin-top:30px; border-top:2px solid #005B9A;"/>
+
+                <div style="margin-top:16px; margin-bottom:12px;">
+                    <table width="100%" style="border-collapse:collapse;">
+                        <tr>
+                            <td style="width:60%;">
+                                <h3 style="color:#005B9A; margin:0; font-size:14pt;">
+                                    Option de financement - Grenke Leasing
+                                </h3>
+                                <p style="color:#555; font-size:9pt; margin:2px 0 0 0;">
+                                    Bareme officiel Grenke Leasing Suisse - Octobre 2024
+                                </p>
+                            </td>
+                            <td style="width:40%; text-align:right; vertical-align:top;">
+                                <p style="font-size:9pt; color:#888; margin:0;">
+                                    Duree : <strong><t t-esc="doc.leasing_duration_int"/> mois</strong>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <table width="100%" style="border-collapse:collapse; font-size:10pt; margin-bottom:10px;">
+                    <thead>
+                        <tr style="background-color:#005B9A; color:white;">
+                            <th style="padding:8px 10px; text-align:left; width:55%;">Description</th>
+                            <th style="padding:8px 10px; text-align:right; width:20%;">Calcul</th>
+                            <th style="padding:8px 10px; text-align:right; width:25%;">Montant HT (CHF)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color:#F5F8FC;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Montant a financer</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888;">-</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                                CHF <t t-esc="'%.2f' % doc.leasing_amount"/>
+                            </td>
+                        </tr>
+                        <tr style="background-color:#EBF3FB;">
+                            <td style="padding:10px; border-bottom:1px solid #dde4ee; font-weight:bold;">Mensualite HT</td>
+                            <td style="padding:10px; text-align:right; border-bottom:1px solid #dde4ee; color:#555; font-size:9pt;">
+                                <t t-esc="'%.2f' % doc.leasing_amount"/> x <t t-esc="'%.2f' % doc.leasing_rate"/>%
+                            </td>
+                            <td style="padding:10px; text-align:right; border-bottom:1px solid #dde4ee; font-weight:bold; font-size:12pt; color:#005B9A;">
+                                CHF <t t-esc="'%.2f' % doc.leasing_monthly"/> / mois
+                            </td>
+                        </tr>
+                        <tr style="background-color:#F5F8FC;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">
+                                Total loyers (<t t-esc="doc.leasing_duration_int"/> mensualites)
+                            </td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">
+                                <t t-esc="'%.2f' % doc.leasing_monthly"/> x <t t-esc="doc.leasing_duration_int"/>
+                            </td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                                CHF <t t-esc="'%.2f' % doc.leasing_total_rent"/>
+                            </td>
+                        </tr>
+                        <t t-if="doc.leasing_residual_value_enabled">
+                            <tr style="background-color:#F5F8FC;">
+                                <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Valeur residuelle optionnelle (rachat en fin de contrat)</td>
+                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">3%</td>
+                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                                    CHF <t t-esc="'%.2f' % doc.leasing_residual_amount"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr style="background-color:#F5F8FC;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Frais de dossier (a la charge du preneur a la signature)</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">
+                                <t t-esc="'%.1f' % doc.leasing_dossier_fee_rate_display"/>% (min. CHF 200.-)
+                            </td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                                CHF <t t-esc="'%.2f' % doc.leasing_dossier_fee"/>
+                            </td>
+                        </tr>
+                        <tr style="background-color:#005B9A; color:white; font-weight:bold;">
+                            <td style="padding:9px 10px;" colspan="2">Cout total du financement HT</td>
+                            <td style="padding:9px 10px; text-align:right; font-size:11pt;">
+                                CHF <t t-esc="'%.2f' % doc.leasing_grand_total"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table width="100%" style="font-size:8.5pt; color:#666; border-top:1px solid #dde4ee; margin-top:4px;">
+                    <tr>
+                        <td style="width:50%; padding:4px 6px; vertical-align:top;">
+                            <strong>Garantie 48h Grenke :</strong> Facture reglee dans les 48h des docs complets.<br/>
+                            <strong>Paiement :</strong> LSV mensuel ou trimestriel, le 1er du mois.<br/>
+                            <strong>Assurance :</strong> non incluse, a convenir separement.
+                        </td>
+                        <td style="width:50%; padding:4px 6px; vertical-align:top;">
+                            <strong>Licences :</strong> Uniquement perpetuelles ou transferables.<br/>
+                            <strong>Avantage fiscal CH :</strong> Loyers deductibles a 100% comme charges d'exploitation.
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="margin-top:8px; font-size:8pt; color:#AAA; text-align:center;">
+                    GRENKELEASING AG - The Circle 23, 8058 Zurich - IDE : CHE-105.217.027 TVA - Octobre 2024
+                </div>
+
+                <!-- BLOC 2 : Fiche de renseignements Grenke (nouvelle page) -->
+                <div style="page-break-before:always;"/>
+
+                <!-- En-tete Grenke -->
+                <table width="100%" style="border-collapse:collapse; margin-bottom:20px;">
+                    <tr>
+                        <td style="width:55%; vertical-align:top; font-size:8pt; color:#555;">
+                            <strong>GRENKELEASING AG</strong><br/>
+                            IDE : CHE-105.217.027 // CHE-105.217.027 TVA<br/>
+                            Certifie selon DIN EN ISO 9001:2015
+                        </td>
+                        <td style="width:45%; text-align:right; vertical-align:top;">
+                            <span style="font-size:32pt; font-weight:bold; letter-spacing:-2px; color:#000;">grenke</span>
+                            <br/>
+                            <span style="font-size:7.5pt; color:#666;">
+                                Siege principal : The Circle 23, 8058 Zurich<br/>
+                                +41 44 365 60 00 | service@grenke.ch | www.grenke.ch
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Titre -->
+                <h2 style="font-size:16pt; font-weight:bold; margin-bottom:24px; margin-top:10px; border-bottom:1px solid #ccc; padding-bottom:8px;">
+                    Fiche de renseignements pour la demande de leasing
+                </h2>
+
+                <!-- Champs principaux -->
+                <table width="100%" style="border-collapse:collapse; margin-bottom:20px;">
+                    <tr>
+                        <td style="width:35%; padding:6px 0; font-size:10pt;">Fournisseur</td>
+                        <td style="width:65%; padding:6px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            <t t-esc="doc.company_id.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:6px 0; font-size:10pt;">Objet</td>
+                        <td style="padding:6px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            Materiel/logiciel informatique
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:6px 0; font-size:10pt;">Prix CHF (hors taxe)</td>
+                        <td style="padding:6px 0; border-bottom:1px solid #333; font-size:10pt; width:40%;">
+                            <t t-esc="'%.2f' % doc.leasing_amount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:6px 0; font-size:10pt;">Duree/mois</td>
+                        <td style="padding:6px 0; border-bottom:1px solid #333; font-size:10pt; width:40%;">
+                            <t t-esc="doc.leasing_duration_int"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="height:16px;"/>
+
+                <!-- Champs client -->
+                <table width="100%" style="border-collapse:collapse; margin-bottom:20px;">
+                    <tr>
+                        <td style="width:38%; padding:7px 0; font-size:10pt;">Nom et prenom ou raison sociale</td>
+                        <td style="width:62%; padding:7px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            <t t-esc="doc.partner_id.commercial_company_name or doc.partner_id.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:7px 0; font-size:10pt;">Adresse</td>
+                        <td style="padding:7px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            <t t-esc="doc.partner_invoice_id.street or ''"/>
+                            <t t-if="doc.partner_invoice_id.street2">
+                                , <t t-esc="doc.partner_invoice_id.street2"/>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:7px 0; font-size:10pt;">NPA/Lieu</td>
+                        <td style="padding:7px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            <t t-esc="doc.partner_invoice_id.zip or ''"/>
+                            <t t-esc="' ' + doc.partner_invoice_id.city if doc.partner_invoice_id.city else ''"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:7px 0; font-size:10pt; vertical-align:bottom;">Tel</td>
+                        <td style="padding:7px 0; font-size:10pt;">
+                            <table width="100%" style="border-collapse:collapse;">
+                                <tr>
+                                    <td style="width:40%; border-bottom:1px solid #333;">
+                                        <t t-esc="doc.partner_id.phone or doc.partner_id.mobile or ''"/>
+                                    </td>
+                                    <td style="width:5%; text-align:center; font-size:10pt;">Email</td>
+                                    <td style="width:55%; border-bottom:1px solid #333;">
+                                        <t t-esc="doc.partner_id.email or ''"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Section entreprises individuelles -->
+                <div style="margin-top:16px; margin-bottom:8px;">
+                    <span style="font-size:10pt; text-decoration:underline;">
+                        Pour les entreprises individuelles et independants
+                    </span>
+                </div>
+                <table width="100%" style="border-collapse:collapse; margin-bottom:12px;">
+                    <tr>
+                        <td style="width:35%; padding:7px 0; font-size:10pt;">Adresse privee</td>
+                        <td style="width:65%; padding:7px 0; border-bottom:1px solid #333; font-size:10pt;">
+                            &#160;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:7px 0; font-size:10pt;">Date de naissance</td>
+                        <td style="padding:7px 0; font-size:10pt;">
+                            <table width="100%" style="border-collapse:collapse;">
+                                <tr>
+                                    <td style="width:38%; border-bottom:1px solid #333;">&#160;</td>
+                                    <td style="width:4%;"/>
+                                    <td style="width:20%; font-size:10pt;">Proprietaire</td>
+                                    <td style="width:10%; font-size:10pt;">Oui</td>
+                                    <td style="width:10%; font-size:10pt;">Non</td>
+                                    <td style="width:18%;"/>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Zone signature -->
+                <div style="height:30px;"/>
+                <table width="100%" style="border-collapse:collapse; margin-bottom:8px;">
+                    <tr>
+                        <td style="width:42%; border-bottom:2px solid #333;"/>
+                        <td style="width:8%;"/>
+                        <td style="width:50%; border-bottom:2px solid #333;"/>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:4px; font-size:10pt; font-weight:bold;">Lieu et date</td>
+                        <td/>
+                        <td style="padding-top:4px; font-size:10pt; font-weight:bold;">Signature</td>
+                    </tr>
+                </table>
+
+                <!-- Texte legal -->
+                <div style="margin-top:16px; font-size:8pt; font-style:italic; color:#333; text-align:justify;">
+                    En apposant sa signature, le demandeur de leasing certifie la veracite des elements ci-dessus.
+                    Il prend acte des consequences auxquelles il s'expose dans l'hypothese ou des indications
+                    incorrectes sont fournies. Il certifie qu'aucun element de nature a influencer la conclusion
+                    du contrat de leasing n'a ete tenu sous silence.
+                    Nous autorisons Grenkeleasing SA a prendre et a donner tous renseignements utiles pour l'etude
+                    de cette demande de leasing aupres des banques, le service central pour des informations de
+                    credit (ZEK), de l'Office de poursuites ou de tout autre service officiel.
+                </div>
+
+                <!-- Complements -->
+                <div style="margin-top:16px; font-size:9pt;">
+                    <strong>Complements :</strong>
+                    <ul style="margin:4px 0 0 20px;">
+                        <li>Copie de la piece d'identite, valide et recto-verso</li>
+                        <li>Attestation de la Caisse AVS pour les independants pas inscrits au Registre du commerce</li>
+                    </ul>
+                </div>
+
+                <!-- Encadre retour document -->
+                <div style="margin-top:20px; border:1px solid #333; padding:10px; text-align:center; font-size:10pt; font-weight:bold;">
+                    Document a nous retourner a : cohrel@grenke.ch
+                </div>
+
+                <!-- Pied de page Grenke -->
+                <div style="margin-top:30px; border-top:1px solid #ccc; padding-top:8px;">
+                    <table width="100%" style="border-collapse:collapse;">
+                        <tr>
+                            <td style="width:50%; font-size:7.5pt; color:#555; vertical-align:top;">
+                                <strong>GRENKELEASING AG</strong><br/>
+                                IDE : CHE-105.217.027 // CHE-105.217.027 TVA<br/>
+                                Certifie selon DIN EN ISO 9001:2015
+                            </td>
+                            <td style="width:50%; text-align:right; font-size:7.5pt; color:#555; vertical-align:top;">
+                                <strong>Siege principal :</strong><br/>
+                                The Circle 23 | 8058 Zurich<br/>
+                                +41 44 365 60 00 | service@grenke.ch | www.grenke.ch
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
