@@ -76,8 +76,11 @@ class SaleOrder(models.Model):
     # -- Parametres modifiables par le commercial --------------------------
     leasing_amount = fields.Float(
         string='Montant a financer HT (CHF)',
+        compute='_compute_leasing_amount',
+        store=True,
+        readonly=False,
         digits=(10, 2),
-        help="Montant net HT de l'equipement/logiciel a soumettre au leasing.",
+        help="Par defaut = total HT du devis. Modifiable manuellement si besoin.",
     )
     leasing_duration = fields.Selection(
         selection=[
@@ -247,6 +250,19 @@ class SaleOrder(models.Model):
                     break
             order.leasing_tranche_label = tranche_label
 
+    @api.depends('leasing_enabled', 'amount_untaxed')
+    def _compute_leasing_amount(self):
+        """Synchronise le montant a financer avec le total HT du devis.
+        Le champ reste editable (readonly=False) : si le commercial
+        modifie la valeur manuellement, elle sera conservee jusqu'au
+        prochain changement de ligne de commande.
+        """
+        for order in self:
+            if order.leasing_enabled:
+                order.leasing_amount = order.amount_untaxed
+            else:
+                order.leasing_amount = 0.0
+
     @api.constrains('leasing_amount')
     def _check_leasing_amount(self):
         for order in self:
@@ -256,9 +272,3 @@ class SaleOrder(models.Model):
                         "Le montant a financer doit etre compris entre "
                         "CHF 1'000 et CHF 250'000 selon le bareme Grenke Leasing."
                     )
-
-    @api.onchange('leasing_enabled')
-    def _onchange_leasing_enabled(self):
-        """Pre-remplit le montant a financer avec le total HT du devis."""
-        if self.leasing_enabled and not self.leasing_amount and self.amount_untaxed:
-            self.leasing_amount = self.amount_untaxed
