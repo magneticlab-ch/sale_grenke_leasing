@@ -8,13 +8,14 @@
             <t t-if="doc.leasing_enabled and doc.leasing_amount">
 
                 <!-- BLOC 1 : Resume leasing dans le devis -->
-                <div style="margin-top:30px; border-top:2px solid #005B9A;"/>
+                <div style="page-break-before:always;"/>
+                <div style="margin-top:80px; border-top:2px solid #E30613;"/>
 
                 <div style="margin-top:16px; margin-bottom:12px;">
                     <table width="100%" style="border-collapse:collapse;">
                         <tr>
                             <td style="width:60%;">
-                                <h3 style="color:#005B9A; margin:0; font-size:14pt;">
+                                <h3 style="color:#E30613; margin:0; font-size:14pt;">
                                     Option de financement - Grenke Leasing
                                 </h3>
                                 <p style="color:#555; font-size:9pt; margin:2px 0 0 0;">
@@ -32,59 +33,59 @@
 
                 <table width="100%" style="border-collapse:collapse; font-size:10pt; margin-bottom:10px;">
                     <thead>
-                        <tr style="background-color:#005B9A; color:white;">
+                        <tr style="background-color:#E30613; color:white;">
                             <th style="padding:8px 10px; text-align:left; width:55%;">Description</th>
                             <th style="padding:8px 10px; text-align:right; width:20%;">Calcul</th>
                             <th style="padding:8px 10px; text-align:right; width:25%;">Montant HT (CHF)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="background-color:#F5F8FC;">
-                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Montant a financer</td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888;">-</td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                        <tr style="background-color:#FEF2F2;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #f0d0d0;">Montant a financer</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0; color:#888;">-</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0;">
                                 CHF <t t-esc="'%.2f' % doc.leasing_amount"/>
                             </td>
                         </tr>
-                        <tr style="background-color:#EBF3FB;">
-                            <td style="padding:10px; border-bottom:1px solid #dde4ee; font-weight:bold;">Mensualite HT</td>
-                            <td style="padding:10px; text-align:right; border-bottom:1px solid #dde4ee; color:#555; font-size:9pt;">
+                        <tr style="background-color:#FDE8E8;">
+                            <td style="padding:10px; border-bottom:1px solid #f0d0d0; font-weight:bold;">Mensualite HT</td>
+                            <td style="padding:10px; text-align:right; border-bottom:1px solid #f0d0d0; color:#555; font-size:9pt;">
                                 <t t-esc="'%.2f' % doc.leasing_amount"/> x <t t-esc="'%.2f' % doc.leasing_rate"/>%
                             </td>
-                            <td style="padding:10px; text-align:right; border-bottom:1px solid #dde4ee; font-weight:bold; font-size:12pt; color:#005B9A;">
+                            <td style="padding:10px; text-align:right; border-bottom:1px solid #f0d0d0; font-weight:bold; font-size:12pt; color:#E30613;">
                                 CHF <t t-esc="'%.2f' % doc.leasing_monthly"/> / mois
                             </td>
                         </tr>
-                        <tr style="background-color:#F5F8FC;">
-                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">
+                        <tr style="background-color:#FEF2F2;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #f0d0d0;">
                                 Total loyers (<t t-esc="doc.leasing_duration_int"/> mensualites)
                             </td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0; color:#888; font-size:9pt;">
                                 <t t-esc="'%.2f' % doc.leasing_monthly"/> x <t t-esc="doc.leasing_duration_int"/>
                             </td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0;">
                                 CHF <t t-esc="'%.2f' % doc.leasing_total_rent"/>
                             </td>
                         </tr>
                         <t t-if="doc.leasing_residual_value_enabled">
-                            <tr style="background-color:#F5F8FC;">
-                                <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Valeur residuelle optionnelle (rachat en fin de contrat)</td>
-                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">3%</td>
-                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                            <tr style="background-color:#FEF2F2;">
+                                <td style="padding:7px 10px; border-bottom:1px solid #f0d0d0;">Valeur residuelle optionnelle (rachat en fin de contrat)</td>
+                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0; color:#888; font-size:9pt;">3%</td>
+                                <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0;">
                                     CHF <t t-esc="'%.2f' % doc.leasing_residual_amount"/>
                                 </td>
                             </tr>
                         </t>
-                        <tr style="background-color:#F5F8FC;">
-                            <td style="padding:7px 10px; border-bottom:1px solid #dde4ee;">Frais de dossier (a la charge du preneur a la signature)</td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee; color:#888; font-size:9pt;">
+                        <tr style="background-color:#FEF2F2;">
+                            <td style="padding:7px 10px; border-bottom:1px solid #f0d0d0;">Frais de dossier (a la charge du preneur a la signature)</td>
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0; color:#888; font-size:9pt;">
                                 <t t-esc="'%.1f' % doc.leasing_dossier_fee_rate_display"/>% (min. CHF 200.-)
                             </td>
-                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #dde4ee;">
+                            <td style="padding:7px 10px; text-align:right; border-bottom:1px solid #f0d0d0;">
                                 CHF <t t-esc="'%.2f' % doc.leasing_dossier_fee"/>
                             </td>
                         </tr>
-                        <tr style="background-color:#005B9A; color:white; font-weight:bold;">
+                        <tr style="background-color:#E30613; color:white; font-weight:bold;">
                             <td style="padding:9px 10px;" colspan="2">Cout total du financement HT</td>
                             <td style="padding:9px 10px; text-align:right; font-size:11pt;">
                                 CHF <t t-esc="'%.2f' % doc.leasing_grand_total"/>
@@ -93,7 +94,7 @@
                     </tbody>
                 </table>
 
-                <table width="100%" style="font-size:8.5pt; color:#666; border-top:1px solid #dde4ee; margin-top:4px;">
+                <table width="100%" style="font-size:8.5pt; color:#666; border-top:1px solid #f0d0d0; margin-top:4px;">
                     <tr>
                         <td style="width:50%; padding:4px 6px; vertical-align:top;">
                             <strong>Garantie 48h Grenke :</strong> Facture reglee dans les 48h des docs complets.<br/>
@@ -115,7 +116,7 @@
                 <div style="page-break-before:always;"/>
 
                 <!-- En-tete Grenke -->
-                <table width="100%" style="border-collapse:collapse; margin-bottom:20px;">
+                <table width="100%" style="border-collapse:collapse; margin-top:80px; margin-bottom:20px;">
                     <tr>
                         <td style="width:55%; vertical-align:top; font-size:8pt; color:#555;">
                             <strong>GRENKELEASING AG</strong><br/>
