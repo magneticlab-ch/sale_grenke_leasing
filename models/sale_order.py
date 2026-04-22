@@ -76,11 +76,8 @@ class SaleOrder(models.Model):
     # -- Parametres modifiables par le commercial --------------------------
     leasing_amount = fields.Float(
         string='Montant a financer HT (CHF)',
-        compute='_compute_leasing_amount',
-        store=True,
-        readonly=False,
         digits=(10, 2),
-        help="Par defaut = total HT du devis. Modifiable manuellement si besoin.",
+        help="Montant net HT a soumettre au leasing. Rempli automatiquement avec le total HT du devis.",
     )
     leasing_duration = fields.Selection(
         selection=[
@@ -177,7 +174,7 @@ class SaleOrder(models.Model):
     # -- Methode de calcul principale --------------------------------------
     @api.depends(
         'leasing_enabled',
-        'leasing_amount',
+        'amount_untaxed',
         'leasing_duration',
         'leasing_residual_value_enabled',
         'leasing_dossier_fee_override',
@@ -185,6 +182,10 @@ class SaleOrder(models.Model):
     )
     def _compute_leasing(self):
         for order in self:
+            # Auto-sync leasing_amount avec le total HT du devis
+            if order.leasing_enabled and order.amount_untaxed:
+                order.leasing_amount = order.amount_untaxed
+
             if not order.leasing_enabled or not order.leasing_amount:
                 order.leasing_rate = 0.0
                 order.leasing_monthly = 0.0
@@ -249,19 +250,6 @@ class SaleOrder(models.Model):
                     )
                     break
             order.leasing_tranche_label = tranche_label
-
-    @api.depends('leasing_enabled', 'amount_untaxed')
-    def _compute_leasing_amount(self):
-        """Synchronise le montant a financer avec le total HT du devis.
-        Le champ reste editable (readonly=False) : si le commercial
-        modifie la valeur manuellement, elle sera conservee jusqu'au
-        prochain changement de ligne de commande.
-        """
-        for order in self:
-            if order.leasing_enabled:
-                order.leasing_amount = order.amount_untaxed
-            else:
-                order.leasing_amount = 0.0
 
     @api.constrains('leasing_amount')
     def _check_leasing_amount(self):
