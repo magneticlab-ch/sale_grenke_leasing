@@ -7,9 +7,8 @@
         <xpath expr="//div[hasclass('page')]" position="inside">
             <t t-if="doc.leasing_enabled and doc.leasing_amount">
 
-                <!-- BLOC 1 : Resume leasing dans le devis -->
-                <div style="page-break-before:always;"/>
-                <div style="margin-top:80px; border-top:2px solid #E30613;"/>
+                <!-- BLOC 1 : Resume leasing dans le devis (nouvelle page) -->
+                <div style="page-break-before:always; margin-top:120px; border-top:2px solid #E30613;">&#160;</div>
 
                 <div style="margin-top:16px; margin-bottom:12px;">
                     <table width="100%" style="border-collapse:collapse;">
@@ -113,10 +112,10 @@
                 </div>
 
                 <!-- BLOC 2 : Fiche de renseignements Grenke (nouvelle page) -->
-                <div style="page-break-before:always;"/>
+                <div style="page-break-before:always;">&#160;</div>
 
                 <!-- En-tete Grenke -->
-                <table width="100%" style="border-collapse:collapse; margin-top:80px; margin-bottom:20px;">
+                <table width="100%" style="border-collapse:collapse; margin-top:120px; margin-bottom:20px;">
                     <tr>
                         <td style="width:55%; vertical-align:top; font-size:8pt; color:#555;">
                             <strong>GRENKELEASING AG</strong><br/>
