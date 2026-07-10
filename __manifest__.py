@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Grenke Leasing - Calcul automatique sur devis',
-    'version': '19.0.2.0.3',
+    'version': '19.0.2.0.4',
     'category': 'Sales',
     'summary': 'Calcul Grenke Super Lease et rapport de financement dedie sur les devis Odoo 19',
     'description': """
