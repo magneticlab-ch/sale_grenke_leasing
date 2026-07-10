@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action d'impression dediee : "Devis financement Grenke" -->
+    <record id="action_report_saleorder_leasing" model="ir.actions.report">
+        <field name="name">Devis financement Grenke</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_grenke_leasing.report_saleorder_leasing</field>
+        <field name="report_file">sale_grenke_leasing.report_saleorder_leasing</field>
+        <field name="print_report_name">'Devis financement - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
