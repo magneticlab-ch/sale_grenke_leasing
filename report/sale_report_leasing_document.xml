@@ -57,9 +57,9 @@
             <div class="page">
 
                 <!-- Titre -->
-                <div class="d-flex justify-content-between align-items-end mt-2 mb-2">
-                    <h4 class="mb-0" style="color:#E30613;">Financement - Grenke Leasing</h4>
-                    <span class="text-muted small">Duree : <span t-out="doc.leasing_duration_int"/> mois</span>
+                <div class="mt-2 mb-2 clearfix">
+                    <h4 class="mb-0 d-inline-block" style="color:#E30613; white-space:nowrap;">Financement - Grenke Leasing</h4>
+                    <span class="text-muted small float-end" style="white-space:nowrap; padding-top:6px;">Duree : <span t-out="doc.leasing_duration_int"/> mois</span>
                 </div>
 
                 <!-- Tableau financement (style natif, epure) -->
