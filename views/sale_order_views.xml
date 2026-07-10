@@ -42,7 +42,7 @@
                         <p style="margin-top: 10px;">
                             Activez l'option ci-dessus pour calculer automatiquement
                             les mensualites Grenke Leasing.<br/>
-                            <small>Base sur le bareme officiel Grenke Suisse - Octobre 2024</small>
+                            <small>Base sur le bareme officiel Grenke Super Lease - Janvier 2026</small>
                         </p>
                     </div>
 
@@ -52,16 +52,17 @@
                         <!-- PARAMETRES DU CONTRAT -->
                         <group string="Parametres du contrat">
                             <group>
+                                <field name="leasing_amount_override"
+                                       string="Saisir manuellement le montant a financer"/>
                                 <field name="leasing_amount"
                                        string="Montant a financer HT (CHF)"
+                                       readonly="not leasing_amount_override"
                                        widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
                                 <field name="leasing_duration"
                                        string="Duree du contrat"
                                        widget="radio"
                                        options="{'horizontal': true}"/>
-                                <field name="leasing_residual_value_enabled"
-                                       string="Valeur residuelle de rachat (3% optionnel)"/>
                             </group>
                             <group string="Frais de dossier">
                                 <field name="leasing_dossier_fee_override"
@@ -98,25 +99,17 @@
                                        options="{'currency_field': 'currency_id'}"/>
                             </group>
                             <group string="Couts additionnels">
-                                <field name="leasing_residual_amount"
-                                       string="Valeur residuelle (CHF)"
-                                       readonly="1"
-                                       widget="monetary"
-                                       options="{'currency_field': 'currency_id'}"/>
                                 <field name="leasing_dossier_fee"
                                        string="Frais de dossier HT"
                                        readonly="1"
                                        widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
-                                <field name="leasing_dossier_fee_rate_display"
-                                       string="Taux frais de dossier (%)"
-                                       readonly="1"/>
                             </group>
                         </group>
 
-                        <!-- TOTAUX -->
+                        <!-- TOTAUX (usage interne, non imprime sur le rapport client) -->
                         <group col="2">
-                            <group string="Totaux">
+                            <group string="Totaux (interne)">
                                 <field name="leasing_grand_total"
                                        string="Cout total financement HT"
                                        readonly="1"
@@ -137,7 +130,10 @@
                                     <strong>Garantie 48h :</strong>
                                     Facture reglee dans les 48h des documents complets.<br/>
                                     <strong>Paiement :</strong>
-                                    LSV mensuel ou trimestriel, le 1er du mois.<br/>
+                                    Debit direct trimestriel, le 1er jour du trimestre
+                                    (mensuel : +2% ; sur facture : +CHF 20.- HT/loyer).<br/>
+                                    <strong>Frais de dossier :</strong>
+                                    Versement unique de CHF 200.- HT au debut du contrat.<br/>
                                     <strong>Assurance :</strong>
                                     Non incluse, a definir separement.<br/>
                                     <strong>Licences :</strong>

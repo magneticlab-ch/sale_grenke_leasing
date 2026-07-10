@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Grenke Leasing - Calcul automatique sur devis',
-    'version': '19.0.1.0.0',
+    'version': '19.0.2.0.0',
     'category': 'Sales',
-    'summary': 'Integre une section de calcul Grenke Leasing directement dans les devis Odoo 19',
+    'summary': 'Calcul Grenke Super Lease et rapport de financement dedie sur les devis Odoo 19',
     'description': """
-        Ce module ajoute une section dediee au leasing Grenke sur les devis de vente.
-        - Calcul automatique de la mensualite selon le bareme Grenke (octobre 2024)
+        Ce module ajoute le calcul du leasing Grenke sur les devis de vente et un
+        rapport PDF dedie au dossier de financement.
+        - Calcul automatique de la mensualite selon le bareme Grenke Super Lease (janvier 2026)
         - Selection de la duree : 24 / 36 / 48 / 60 mois
-        - Calcul automatique des frais de dossier
-        - Valeur residuelle optionnelle (3%)
-        - Affichage recapitulatif dans le PDF du devis
-        - Toutes les tranches de montant prises en charge (1'000 - 250'000 CHF)
+        - Frais de dossier : forfait CHF 200.- HT (override manuel possible)
+        - Rapport dedie "Devis financement Grenke" : lignes sans prix (description + quantite),
+          page de financement (mensualite) et fiche de renseignements Grenke a signer
+        - Tranches de montant prises en charge : CHF 1'000 - 99'999 (au-dela : contact Grenke)
     """,
     'author': 'XEFI',
     'website': '',
     'depends': ['sale_management'],
     'data': [
         'views/sale_order_views.xml',
-        'report/sale_report_leasing.xml',
+        'report/sale_report_leasing_document.xml',
+        'report/sale_report_leasing_actions.xml',
     ],
     'installable': True,
     'application': False,
