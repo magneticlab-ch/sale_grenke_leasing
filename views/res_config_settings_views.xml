@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_grenke" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.grenke.leasing</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Grenke Leasing" string="Grenke Leasing" name="sale_grenke_leasing" groups="base.group_system">
+                    <block title="Financement Grenke" name="grenke_block">
+                        <setting id="grenke_leasing_enabled_setting" string="Leasing Grenke sur les devis"
+                                 help="Par société : onglet « Leasing Grenke » et rapport « Devis financement Grenke » sur les devis. À activer pour XEFI, pas pour OLIVE &amp; BEIGE.">
+                            <field name="grenke_leasing_enabled"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Grenke Leasing - Calcul automatique sur devis',
-    'version': '19.0.2.0.4',
+    'version': '19.0.2.1.0',
     'category': 'Sales',
     'summary': 'Calcul Grenke Super Lease et rapport de financement dedie sur les devis Odoo 19',
     'description': """
@@ -13,11 +13,14 @@
         - Rapport dedie "Devis financement Grenke" : lignes sans prix (description + quantite),
           page de financement (mensualite) et fiche de renseignements Grenke a signer
         - Tranches de montant prises en charge : CHF 1'000 - 99'999 (au-dela : contact Grenke)
+        - Disponible par societe (Reglages > Grenke Leasing) : XEFI uniquement, pas OLIVE & BEIGE
     """,
     'author': 'XEFI',
     'website': '',
     'depends': ['sale_management'],
     'data': [
+        'data/res_company_data.xml',
+        'views/res_config_settings_views.xml',
         'views/sale_order_views.xml',
         'report/sale_report_leasing_document.xml',
         'report/sale_report_leasing_actions.xml',

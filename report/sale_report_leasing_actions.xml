@@ -12,7 +12,10 @@
              calage d'en-tete identique ; sinon le defaut societe (DIN5008) decale. -->
         <field name="paperformat_id" ref="base.paperformat_euro"/>
         <field name="print_report_name">'Devis financement - %s' % (object.name)</field>
-        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <!-- Pas de liaison au menu Imprimer : une liaison est visible dans toutes les
+             societes. Le rapport se lance par le bouton « Devis financement Grenke »
+             du devis, affiche uniquement si la societe a le leasing Grenke. -->
+        <field name="binding_model_id" eval="False"/>
         <field name="binding_type">report</field>
     </record>
 
