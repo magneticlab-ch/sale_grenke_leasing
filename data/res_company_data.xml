@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Société principale = Magneticlab Sarl / XEFI Neuchâtel : seule société avec le leasing Grenke. -->
+    <record id="base.main_company" model="res.company">
+        <field name="grenke_leasing_enabled" eval="True"/>
+    </record>
+</odoo>

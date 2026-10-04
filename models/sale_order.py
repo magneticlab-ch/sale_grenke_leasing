@@ -50,6 +50,12 @@ def _get_grenke_rate(amount, duration):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    # -- Disponibilite par societe (XEFI uniquement) ------------------------
+    grenke_company_enabled = fields.Boolean(
+        related='company_id.grenke_leasing_enabled',
+        string='Leasing Grenke disponible pour la société',
+    )
+
     # -- Activation --------------------------------------------------------
     leasing_enabled = fields.Boolean(
         string='Proposer une option leasing Grenke',
@@ -227,3 +233,12 @@ class SaleOrder(models.Model):
                 raise ValidationError(
                     "Les frais de dossier ne peuvent pas etre negatifs."
                 )
+
+    # -- Rapport dedie (bouton, visible seulement si la societe a le leasing) --
+    def action_print_grenke_report(self):
+        self.ensure_one()
+        if not self.company_id.grenke_leasing_enabled:
+            raise ValidationError("Le financement Grenke n'est pas disponible pour la société %s." % self.company_id.name)
+        if not self.leasing_enabled:
+            raise ValidationError("Active d'abord l'option leasing Grenke sur ce devis.")
+        return self.env.ref('sale_grenke_leasing.action_report_saleorder_leasing').report_action(self)
